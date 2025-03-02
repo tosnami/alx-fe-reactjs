@@ -2,29 +2,52 @@ import { create } from 'zustand';
 
 const useRecipeStore = create((set) => ({
   recipes: [],
+  searchTerm: '',
+  favorites: [],
+  recommendations: [],
+  
+  // إضافة وصفات
+  addRecipe: (newRecipe) => set((state) => ({ recipes: [...state.recipes, newRecipe] })),
 
-  // Action to set the initial list of recipes
-  setRecipes: (newRecipes) => set({ recipes: newRecipes }),
+  // تحديث وصفة
+  updateRecipe: (updatedRecipe) => set((state) => ({
+    recipes: state.recipes.map((recipe) =>
+      recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+    ),
+  })),
 
-  // Action to add a new recipe
-  addRecipe: (newRecipe) =>
+  // حذف وصفة
+  deleteRecipe: (recipeId) => set((state) => ({
+    recipes: state.recipes.filter((recipe) => recipe.id !== recipeId),
+  })),
+
+  // البحث عن وصفات
+  setSearchTerm: (term) => set({ searchTerm: term }),
+  filterRecipes: () =>
     set((state) => ({
-      recipes: [...state.recipes, newRecipe],
-    })),
-
-  // Action to update an existing recipe
-  updateRecipe: (updatedRecipe) =>
-    set((state) => ({
-      recipes: state.recipes.map((recipe) =>
-        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
+      filteredRecipes: state.recipes.filter((recipe) =>
+        recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
       ),
     })),
 
-  // Action to delete a recipe
-  deleteRecipe: (recipeId) =>
+  // إدارة الوصفات المفضلة
+  addFavorite: (recipeId) =>
     set((state) => ({
-      recipes: state.recipes.filter((recipe) => recipe.id !== recipeId),
+      favorites: [...state.favorites, recipeId],
     })),
+
+  removeFavorite: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((id) => id !== recipeId),
+    })),
+
+  generateRecommendations: () =>
+    set((state) => {
+      const recommended = state.recipes.filter(
+        (recipe) => state.favorites.includes(recipe.id) && Math.random() > 0.5
+      );
+      return { recommendations: recommended };
+    }),
 }));
 
 export default useRecipeStore;
