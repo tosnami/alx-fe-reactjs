@@ -1,20 +1,24 @@
-import { useRecipeStore } from "../recipeStore"; // تأكد من صحة المسار
+import React from 'react';
+import { useRecipeStore } from '../store/recipeStore';
 
 const RecipeList = () => {
-  // جلب قائمة الوصفات من Zustand
-  const recipes = useRecipeStore((state) => state.recipes);
+  const filteredRecipes = useRecipeStore((state) => state.filteredRecipes);
 
   return (
     <div>
-      <h2>Recipe List</h2>
-      <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe.id}>
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
-          </li>
-        ))}
-      </ul>
+      <h2>Recipes</h2>
+      {filteredRecipes.length > 0 ? (
+        <ul>
+          {filteredRecipes.map((recipe) => (
+            <li key={recipe.id}>
+              <h3>{recipe.title}</h3>
+              <p>{recipe.description}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No recipes found.</p>
+      )}
     </div>
   );
 };
