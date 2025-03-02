@@ -5,24 +5,31 @@ const useRecipeStore = create((set) => ({
   searchTerm: '',
   favorites: [],
   recommendations: [],
-  
-  // إضافة وصفات
-  addRecipe: (newRecipe) => set((state) => ({ recipes: [...state.recipes, newRecipe] })),
+  filteredRecipes: [],
 
-  // تحديث وصفة
+  // ✅ إضافة setRecipes لحل المشكلة
+  setRecipes: (newRecipes) => set({ recipes: newRecipes }),
+
+  // ✅ إضافة وصفة جديدة
+  addRecipe: (newRecipe) => set((state) => ({
+    recipes: [...state.recipes, newRecipe]
+  })),
+
+  // ✅ تحديث وصفة
   updateRecipe: (updatedRecipe) => set((state) => ({
     recipes: state.recipes.map((recipe) =>
       recipe.id === updatedRecipe.id ? updatedRecipe : recipe
     ),
   })),
 
-  // حذف وصفة
+  // ✅ حذف وصفة
   deleteRecipe: (recipeId) => set((state) => ({
     recipes: state.recipes.filter((recipe) => recipe.id !== recipeId),
   })),
 
-  // البحث عن وصفات
+  // ✅ البحث عن وصفات
   setSearchTerm: (term) => set({ searchTerm: term }),
+  
   filterRecipes: () =>
     set((state) => ({
       filteredRecipes: state.recipes.filter((recipe) =>
@@ -30,17 +37,16 @@ const useRecipeStore = create((set) => ({
       ),
     })),
 
-  // إدارة الوصفات المفضلة
-  addFavorite: (recipeId) =>
-    set((state) => ({
-      favorites: [...state.favorites, recipeId],
-    })),
+  // ✅ إدارة الوصفات المفضلة
+  addFavorite: (recipeId) => set((state) => ({
+    favorites: [...state.favorites, recipeId],
+  })),
 
-  removeFavorite: (recipeId) =>
-    set((state) => ({
-      favorites: state.favorites.filter((id) => id !== recipeId),
-    })),
+  removeFavorite: (recipeId) => set((state) => ({
+    favorites: state.favorites.filter((id) => id !== recipeId),
+  })),
 
+  // ✅ إنشاء توصيات بناءً على المفضلة
   generateRecommendations: () =>
     set((state) => {
       const recommended = state.recipes.filter(
