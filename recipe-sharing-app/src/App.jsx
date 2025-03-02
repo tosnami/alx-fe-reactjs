@@ -1,31 +1,21 @@
-import React, { useEffect } from 'react';
-import useRecipeStore from './store/recipeStore';
-import SearchBar from './components/SearchBar';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RecipeList from './components/RecipeList';
+import AddRecipeForm from './components/AddRecipeForm';
+import RecipeDetail from './components/RecipeDetail';
 
-const App = () => {
-  const setRecipes = useRecipeStore((state) => state.setRecipes);
-  const filterRecipes = useRecipeStore((state) => state.filterRecipes);
-
-  useEffect(() => {
-    // بيانات وصفات افتراضية لاختبار التطبيق
-    const mockRecipes = [
-      { id: 1, title: 'Spaghetti Carbonara', description: 'A classic Italian pasta dish.' },
-      { id: 2, title: 'Chicken Curry', description: 'Spicy and creamy Indian-style curry.' },
-      { id: 3, title: 'Chocolate Cake', description: 'Rich and moist chocolate cake.' }
-    ];
-    
-    setRecipes(mockRecipes);
-    filterRecipes();  // تطبيق الفلترة الأولية
-  }, [setRecipes, filterRecipes]);
-
+function App() {
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: 'auto' }}>
-      <h1>Recipe Sharing App</h1>
-      <SearchBar />
-      <RecipeList />
-    </div>
+    <Router>
+      <div>
+        <h1>Recipe Sharing App</h1>
+        <Routes>
+          <Route path="/" element={<RecipeList />} />
+          <Route path="/add-recipe" element={<AddRecipeForm />} />
+          <Route path="/recipe/:id" element={<RecipeDetail />} />
+        </Routes>
+      </div>
+    </Router>
   );
-};
+}
 
 export default App;
