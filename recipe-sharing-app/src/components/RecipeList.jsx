@@ -1,11 +1,22 @@
-import { create } from 'zustand';
+import { useRecipeStore } from "../recipeStore"; // تأكد من صحة المسار
 
-const useRecipeStore = create((set) => ({
-  recipes: [], // مصفوفة لتخزين الوصفات
-  addRecipe: (newRecipe) => set((state) => ({
-    recipes: [...state.recipes, newRecipe]
-  })),
-  setRecipes: (recipes) => set({ recipes }), // تعيين الوصفات إذا لزم الأمر
-}));
+const RecipeList = () => {
+  // جلب قائمة الوصفات من Zustand
+  const recipes = useRecipeStore((state) => state.recipes);
 
-export default useRecipeStore;
+  return (
+    <div>
+      <h2>Recipe List</h2>
+      <ul>
+        {recipes.map((recipe) => (
+          <li key={recipe.id}>
+            <h3>{recipe.title}</h3>
+            <p>{recipe.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default RecipeList;
