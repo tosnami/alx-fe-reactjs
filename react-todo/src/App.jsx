@@ -1,10 +1,11 @@
 import React from "react";
-import Todolist from "./Todolist"; // تأكد من أن المسار صحيح
+import TodoList from "./components/TodoList"; // Ensure the correct path
 
 function App() {
   return (
-    <div className="App">
-      <Todolist />
+    <div>
+      <h1>My Todo App</h1>
+      <TodoList />
     </div>
   );
 }
