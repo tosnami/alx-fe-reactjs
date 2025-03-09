@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useState } from 'react';
 
 const fetchPosts = async () => {
   const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
@@ -8,13 +7,13 @@ const fetchPosts = async () => {
 };
 
 function PostsComponent() {
-  const [enabled, setEnabled] = useState(true);
-
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['posts'],
     queryFn: fetchPosts,
-    enabled, // Allows conditional fetching
-    staleTime: 5000, // Data remains fresh for 5 seconds before refetching
+    staleTime: 5000,  // البيانات تظل "جديدة" لمدة 5 ثوانٍ
+    cacheTime: 300000, // تخزين البيانات في الكاش لمدة 5 دقائق (300,000 مللي ثانية)
+    refetchOnWindowFocus: false, // منع إعادة الجلب عند التركيز على النافذة
+    keepPreviousData: true, // إبقاء البيانات القديمة أثناء تحميل البيانات الجديدة
   });
 
   if (isLoading) return <p>Loading posts...</p>;
@@ -23,9 +22,6 @@ function PostsComponent() {
   return (
     <div>
       <button onClick={() => refetch()}>Refetch Posts</button>
-      <button onClick={() => setEnabled((prev) => !prev)}>
-        {enabled ? 'Disable Fetching' : 'Enable Fetching'}
-      </button>
       <ul>
         {data.map((post) => (
           <li key={post.id}>
