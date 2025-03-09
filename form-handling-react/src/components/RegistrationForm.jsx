@@ -4,14 +4,23 @@ function RegistrationForm() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username || !email || !password) {
-      alert("جميع الحقول مطلوبة!");
+    let validationErrors = {};
+
+    if (!username) validationErrors.username = "اسم المستخدم مطلوب";
+    if (!email) validationErrors.email = "البريد الإلكتروني مطلوب";
+    if (!password) validationErrors.password = "كلمة المرور مطلوبة";
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
+
     console.log({ username, email, password });
+    setErrors({});
   };
 
   return (
@@ -23,6 +32,7 @@ function RegistrationForm() {
           value={username} 
           onChange={(e) => setUsername(e.target.value)} 
         />
+        {errors.username && <p style={{ color: "red" }}>{errors.username}</p>}
       </div>
 
       <div>
@@ -32,6 +42,7 @@ function RegistrationForm() {
           value={email} 
           onChange={(e) => setEmail(e.target.value)} 
         />
+        {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
       </div>
 
       <div>
@@ -41,6 +52,7 @@ function RegistrationForm() {
           value={password} 
           onChange={(e) => setPassword(e.target.value)} 
         />
+        {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
       </div>
 
       <button type="submit">تسجيل</button>
