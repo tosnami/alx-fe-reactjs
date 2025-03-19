@@ -1,90 +1,74 @@
-import { useState } from "react";
+import React, { useState } from 'react';
 
-const AddRecipeForm = ({ onAddRecipe }) => {
-  const [title, setTitle] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
-  const [error, setError] = useState("");
+const AddRecipeForm = () => {
+  const [title, setTitle] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [steps, setSteps] = useState(''); // Step field added here
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation: Ensure all fields are filled
-    if (!title || !ingredients || !instructions) {
-      setError("All fields are required.");
-      return;
+    // Basic validation to check if fields are empty
+    if (!title || !ingredients || !steps) {
+      setError('All fields are required!');
+    } else {
+      // Here you would typically send the form data to your backend
+      const newRecipe = {
+        title,
+        ingredients,
+        steps,
+      };
+
+      console.log(newRecipe); // Log the new recipe data
+      setError(''); // Reset error message
     }
-
-    // Format the ingredients as an array
-    const ingredientsArray = ingredients.split(",").map((item) => item.trim());
-
-    // Ensure at least two ingredients
-    if (ingredientsArray.length < 2) {
-      setError("Please provide at least two ingredients.");
-      return;
-    }
-
-    // Create new recipe object
-    const newRecipe = {
-      id: Date.now(),
-      name: title,
-      description: "A user-submitted recipe.",
-      ingredients: ingredientsArray,
-      instructions: instructions.split(".").map((step) => step.trim()),
-      image: "https://source.unsplash.com/800x600/?food", // Placeholder image
-    };
-
-    // Call the function to add the recipe
-    onAddRecipe(newRecipe);
-
-    // Reset form
-    setTitle("");
-    setIngredients("");
-    setInstructions("");
-    setError("");
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md mt-8">
-      <h2 className="text-2xl font-bold text-center mb-4">Add a New Recipe</h2>
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 space-y-4 bg-white shadow-md rounded-lg">
+      {/* Error message display */}
+      {error && <div className="text-red-500">{error}</div>}
 
-      {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        {/* Title */}
+      {/* Title input */}
+      <div>
+        <label htmlFor="title" className="block text-sm font-semibold">Recipe Title</label>
         <input
           type="text"
-          placeholder="Recipe Title"
+          id="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full border-gray-300 rounded-md p-2"
         />
+      </div>
 
-        {/* Ingredients */}
+      {/* Ingredients input */}
+      <div>
+        <label htmlFor="ingredients" className="block text-sm font-semibold">Ingredients</label>
         <textarea
-          placeholder="Ingredients (comma separated)"
+          id="ingredients"
           value={ingredients}
           onChange={(e) => setIngredients(e.target.value)}
-          className="p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full border-gray-300 rounded-md p-2"
         />
+      </div>
 
-        {/* Instructions */}
+      {/* Steps input */}
+      <div>
+        <label htmlFor="steps" className="block text-sm font-semibold">Preparation Steps</label>
         <textarea
-          placeholder="Preparation Steps (separated by periods)"
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
-          className="p-3 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          id="steps"
+          value={steps}
+          onChange={(e) => setSteps(e.target.value)}
+          className="w-full border-gray-300 rounded-md p-2"
         />
+      </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
-        >
-          Add Recipe
-        </button>
-      </form>
-    </div>
+      {/* Submit button */}
+      <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded-md">
+        Add Recipe
+      </button>
+    </form>
   );
 };
 
