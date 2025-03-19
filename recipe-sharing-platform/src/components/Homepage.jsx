@@ -4,7 +4,7 @@ const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    fetch("/data.json") // تأكد من المسار الصحيح حسب إعدادات Vite
+    fetch("/data.json") // تأكد من المسار الصحيح حسب إعدادات Vitejhbjh
       .then((response) => response.json())
       .then((data) => setRecipes(data))
       .catch((error) => console.error("Error loading recipes:", error));
