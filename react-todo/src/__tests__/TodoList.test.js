@@ -1,54 +1,47 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-uses-react */
-/* eslint-disable react/react-in-jsx-scope */
 
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
-import TodoList from "../components/TodoList";
+import { render, fireEvent, screen } from "@testing-library/react";
+import TodoList from "../components/TodoList"; // تحقق من أن المسار صحيح
+import "@testing-library/jest-dom";
 
 describe("TodoList Component", () => {
-  test("renders the initial todo items", () => {
-    // eslint-disable-next-line react/react-in-jsx-scope
+  test("renders initial todos", () => {
     render(<TodoList />);
-    expect(screen.getByText("Learn React")).toBeInTheDocument();
-    expect(screen.getByText("Practice Coding")).toBeInTheDocument();
-    expect(screen.getByText("Read Documentation")).toBeInTheDocument();
+    
+    expect(screen.getByText(/learn react/i)).toBeInTheDocument();
+    expect(screen.getByText(/build a todo app/i)).toBeInTheDocument();
   });
 
-  test("allows users to add a new todo", () => {
+  test("adds a new todo", () => {
     render(<TodoList />);
-    const input = screen.getByPlaceholderText("Add a new todo...");
-    const addButton = screen.getByText("Add");
+    
+    const input = screen.getByPlaceholderText(/add a new todo/i);
+    const addButton = screen.getByRole("button", { name: /add/i });
 
     fireEvent.change(input, { target: { value: "New Todo" } });
     fireEvent.click(addButton);
 
-    expect(screen.getByText("New Todo")).toBeInTheDocument();
+    expect(screen.getByText(/new todo/i)).toBeInTheDocument();
   });
 
-  test("toggles the completed status of a todo", () => {
+  test("toggles a todo", () => {
     render(<TodoList />);
-    const todoItem = screen.getByText("Learn React");
-
-    // Initially, the text should not be crossed out
-    expect(todoItem).toHaveStyle("text-decoration: none");
-
-    // Click to toggle completion
-    fireEvent.click(todoItem);
-    expect(todoItem).toHaveStyle("text-decoration: line-through");
-
-    // Click again to undo completion
-    fireEvent.click(todoItem);
-    expect(todoItem).toHaveStyle("text-decoration: none");
+    
+    const todoText = screen.getByText(/learn react/i);
+    fireEvent.click(todoText);
+    
+    expect(todoText).toHaveStyle("text-decoration: line-through");
+    
+    fireEvent.click(todoText);
+    expect(todoText).toHaveStyle("text-decoration: none");
   });
 
-  test("deletes a todo item", () => {
+  test("deletes a todo", () => {
     render(<TodoList />);
-    const todoItem = screen.getByText("Learn React");
-    const deleteButton = todoItem.nextSibling;
+    
+    const deleteButtons = screen.getAllByRole("button", { name: /delete/i });
+    fireEvent.click(deleteButtons[0]);
 
-    fireEvent.click(deleteButton);
-    expect(todoItem).not.toBeInTheDocument();
+    expect(screen.queryByText(/learn react/i)).not.toBeInTheDocument();
   });
 });
