@@ -1,38 +1,40 @@
 [
     {
       "id": 1,
-      "name": "Margherita Pizza",
-      "description": "A traditional Italian pizza with tomatoes, mozzarella cheese, and olive oil.",
-      "image": "https://source.unsplash.com/800x600/?pizza",
+      "title": "Spaghetti Carbonara",
+      "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+      "image": "https://source.unsplash.com/800x600/?pasta",
       "ingredients": [
-        "Pizza dough",
-        "Tomato sauce",
-        "Mozzarella cheese",
-        "Fresh basil",
-        "Olive oil"
+        "200g spaghetti",
+        "2 eggs",
+        "50g parmesan cheese",
+        "100g bacon",
+        "Black pepper"
       ],
       "instructions": [
-        "Preheat the oven to 220°C.",
-        "Roll out the dough and add sauce, cheese, and basil.",
-        "Bake the pizza for 12-15 minutes until golden brown."
+        "Boil the spaghetti until al dente.",
+        "Fry bacon until crispy.",
+        "Mix eggs, cheese, and pepper.",
+        "Combine everything and serve."
       ]
     },
     {
       "id": 2,
-      "name": "Caesar Salad",
-      "description": "A popular salad made with romaine lettuce, grilled chicken, parmesan cheese, and Caesar dressing.",
-      "image": "https://source.unsplash.com/800x600/?salad",
+      "title": "Chicken Tikka Masala",
+      "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato-based gravy.",
+      "image": "https://source.unsplash.com/800x600/?chicken",
       "ingredients": [
-        "Romaine lettuce",
-        "Grilled chicken breast",
-        "Grated parmesan cheese",
-        "Caesar dressing",
-        "Croutons"
+        "500g chicken breast",
+        "2 tbsp yogurt",
+        "1 tbsp garam masala",
+        "1 onion",
+        "200ml tomato puree"
       ],
       "instructions": [
-        "Chop the lettuce and place it in a large bowl.",
-        "Add the grilled chicken and parmesan cheese.",
-        "Pour the dressing and toss the salad well."
+        "Marinate chicken in yogurt and spices for 1 hour.",
+        "Grill the chicken until cooked.",
+        "Cook onions, add tomato puree, and simmer.",
+        "Combine everything and serve with rice."
       ]
     }
   ]
