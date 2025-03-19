@@ -5,7 +5,7 @@ const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching data
+    // Simulate fetching datas
     setRecipes(recipesData);
   }, []);
 
