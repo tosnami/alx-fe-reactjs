@@ -4,7 +4,7 @@ const AddRecipeForm = () => {
   const [formData, setFormData] = useState({
     title: '',
     ingredients: '',
-    steps: '', // This will store the preparation steps
+    steps: '', // Store the preparation steps
   });
 
   const [errors, setErrors] = useState({
@@ -13,24 +13,27 @@ const AddRecipeForm = () => {
     steps: '', // Error for the steps field
   });
 
+  // Handle changes for all fields
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Destructure the target name and value
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: value, // Dynamically update the form data
     }));
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Basic validation
+    e.preventDefault(); // Prevent default form submission
+
+    // Validate the form
     const newErrors = {};
     if (!formData.title) newErrors.title = 'Title is required';
     if (!formData.ingredients) newErrors.ingredients = 'Ingredients are required';
     if (!formData.steps) newErrors.steps = 'Steps are required';
     
     setErrors(newErrors);
-    
+
     if (Object.keys(newErrors).length === 0) {
       // Submit the form data (you could send this data to an API or state)
       console.log('Recipe added:', formData);
@@ -47,9 +50,9 @@ const AddRecipeForm = () => {
           <input
             type="text"
             id="title"
-            name="title"
+            name="title" // Name attribute for dynamic state update
             value={formData.title}
-            onChange={handleChange}
+            onChange={handleChange} // Handle change to update state
             className="w-full p-2 border border-gray-300 rounded-md"
           />
           {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
@@ -60,9 +63,9 @@ const AddRecipeForm = () => {
           <label htmlFor="ingredients" className="block text-lg">Ingredients</label>
           <textarea
             id="ingredients"
-            name="ingredients"
+            name="ingredients" // Name attribute for dynamic state update
             value={formData.ingredients}
-            onChange={handleChange}
+            onChange={handleChange} // Handle change to update state
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="4"
           />
@@ -74,9 +77,9 @@ const AddRecipeForm = () => {
           <label htmlFor="steps" className="block text-lg">Preparation Steps</label>
           <textarea
             id="steps"
-            name="steps"
+            name="steps" // Name attribute for dynamic state update
             value={formData.steps}
-            onChange={handleChange}
+            onChange={handleChange} // Handle change to update state
             className="w-full p-2 border border-gray-300 rounded-md"
             rows="6"
           />
