@@ -15,15 +15,30 @@ const RecipeDetail = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
-      <img src={recipe.image} alt={recipe.title} className="w-full h-64 object-cover mb-4" />
-      <p className="text-xl">{recipe.summary}</p>
-      <h2 className="text-2xl font-semibold mt-6">Ingredients</h2>
-      <ul className="list-disc pl-6">
-        {/* Add ingredients list here */}
-      </ul>
-      <h2 className="text-2xl font-semibold mt-6">Cooking Instructions</h2>
-      <p>{recipe.instructions}</p>
+      <div className="max-w-3xl mx-auto">
+        <div className="border rounded-lg shadow-lg overflow-hidden">
+          <img
+            src={recipe.image}
+            alt={recipe.title}
+            className="w-full h-64 object-cover mb-6 shadow-md"
+          />
+          <div className="p-6">
+            <h1 className="text-3xl font-bold mb-4">{recipe.title}</h1>
+            <p className="text-lg mb-4">{recipe.summary}</p>
+
+            <h2 className="text-2xl font-semibold mt-6 mb-2">Ingredients</h2>
+            <ul className="list-disc pl-6 mb-6">
+              {/* Assuming ingredients are available in the recipe data */}
+              {recipe.ingredients?.map((ingredient, index) => (
+                <li key={index} className="text-lg">{ingredient}</li>
+              ))}
+            </ul>
+
+            <h2 className="text-2xl font-semibold mt-6 mb-2">Cooking Instructions</h2>
+            <p className="text-lg">{recipe.instructions}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
