@@ -1,14 +1,35 @@
 import { useState } from "react";
 
 const AddRecipeForm = ({ addRecipe }) => {
-  // إدارة حالة النموذج
   const [formData, setFormData] = useState({
     title: "",
     ingredients: "",
     steps: "",
   });
 
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
+
+  // دالة التحقق من صحة المدخلات
+  const validate = () => {
+    let validationErrors = {};
+
+    if (!formData.title.trim()) {
+      validationErrors.title = "يجب إدخال عنوان الوصفة!";
+    }
+
+    if (!formData.ingredients.trim()) {
+      validationErrors.ingredients = "يجب إدخال المكونات!";
+    } else if (formData.ingredients.split(",").length < 2) {
+      validationErrors.ingredients = "يجب إدخال مكونين على الأقل، مفصولين بفاصلة.";
+    }
+
+    if (!formData.steps.trim()) {
+      validationErrors.steps = "يجب إدخال خطوات التحضير!";
+    }
+
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
+  };
 
   // تحديث البيانات عند تغيير أي حقل
   const handleChange = (event) => {
@@ -21,21 +42,9 @@ const AddRecipeForm = ({ addRecipe }) => {
   // معالجة الإرسال
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!validate()) return;
 
-    // التحقق من صحة المدخلات
-    if (!formData.title || !formData.ingredients || !formData.steps) {
-      setError("يجب ملء جميع الحقول!");
-      return;
-    }
-
-    if (formData.ingredients.split(",").length < 2) {
-      setError("يجب إدخال مكونين على الأقل، مفصولين بفاصلة.");
-      return;
-    }
-
-    setError(""); // مسح الأخطاء عند الإدخال الصحيح
-
-    // استدعاء دالة الإضافة
+    // إضافة الوصفة
     addRecipe({
       title: formData.title,
       ingredients: formData.ingredients.split(","),
@@ -48,14 +57,13 @@ const AddRecipeForm = ({ addRecipe }) => {
       ingredients: "",
       steps: "",
     });
+
+    setErrors({});
   };
 
   return (
     <div className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
       <h2 className="text-2xl font-bold text-center mb-4">إضافة وصفة جديدة</h2>
-
-      {/* عرض رسالة الخطأ إن وجدت */}
-      {error && <p className="text-red-500 text-sm text-center mb-2">{error}</p>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* حقل عنوان الوصفة */}
@@ -67,6 +75,7 @@ const AddRecipeForm = ({ addRecipe }) => {
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+        {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
         {/* حقل المكونات */}
         <textarea
@@ -76,6 +85,7 @@ const AddRecipeForm = ({ addRecipe }) => {
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+        {errors.ingredients && <p className="text-red-500 text-sm">{errors.ingredients}</p>}
 
         {/* حقل خطوات التحضير */}
         <textarea
@@ -85,6 +95,7 @@ const AddRecipeForm = ({ addRecipe }) => {
           onChange={handleChange}
           className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+        {errors.steps && <p className="text-red-500 text-sm">{errors.steps}</p>}
 
         {/* زر الإرسال */}
         <button
