@@ -5,7 +5,7 @@ const Search = () => {
   const [username, setUsername] = useState('');
   const [location, setLocation] = useState('');
   const [repos, setRepos] = useState('');
- 
+  
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -53,7 +53,7 @@ const Search = () => {
           onChange={(e) => setRepos(e.target.value)}
           className="w-full p-2 border rounded"
         />
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-500 text-white py-2 rounded">
+        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-yellow-300 py-2 rounded">
           Search
         </button>
       </form>
@@ -70,14 +70,15 @@ const Search = () => {
                 <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full mr-4" />
                 <div>
                   <h4 className="text-lg font-bold">{user.login}</h4>
+
                   <a
-                    href={user.html_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    View GitHub Profile
-                  </a>
+  href={user.html_url}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-[red]"
+>
+  View GitHub Profile
+</a>
                 </div>
               </div>
             ))}
