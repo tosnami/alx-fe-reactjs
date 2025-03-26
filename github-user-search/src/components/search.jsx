@@ -1,4 +1,4 @@
-/* eslint-disable */
+
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
@@ -18,7 +18,7 @@ const Search = () => {
       const data = await fetchUserData(username);
       setUserData(data);
     } catch (err) {
-      
+      console.error(err);
       setError(true);
     } finally {
       setLoading(false);
