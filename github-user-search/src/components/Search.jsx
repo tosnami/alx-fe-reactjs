@@ -1,54 +1,87 @@
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService';
+import {  fetchAdvancedSearchResults } from '../services/githubService';
 
 const Search = () => {
   const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [location, setLocation] = useState('');
+  const [repos, setRepos] = useState('');
+ 
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleAdvancedSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(false);
-    setUserData(null);
-
+    setError('');
+    setSearchResults([]);
     try {
-      const data = await fetchUserData(username);
-      setUserData(data);
-    } catch (err) {
-        console.error(err);
-      setError(true);
+      const results = await fetchAdvancedSearchResults(username, location, repos);
+      setSearchResults(results.items);
+      if (results.total_count === 0) {
+        setError("Looks like we can't find the user.");
+      }
+    } catch {
+      setError("Error occurred during search.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div>
-      <h2>GitHub User Search</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="p-6 max-w-xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center">GitHub Advanced User Search</h2>
+      <form onSubmit={handleAdvancedSearch} className="space-y-4">
         <input
           type="text"
+          placeholder="GitHub Username (optional)"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter GitHub username"
-          required
+          className="w-full p-2 border rounded"
         />
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repositories"
+          value={repos}
+          onChange={(e) => setRepos(e.target.value)}
+          className="w-full p-2 border rounded"
+        />
+        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-500 text-white py-2 rounded">
+          Search
+        </button>
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user</p>}
-      {userData && (
-        <div style={{ marginTop: '20px' }}>
-          <p>avatar_url: {userData.avatar_url}</p>  {/* هذا السطر لإرضاء الاختبار */}
-          <p>login: {userData.login}</p>            {/* هذا السطر لإرضاء الاختبار */}
-          <img src={userData.avatar_url} alt="img" width="100" />  {/* alt="img" */}
-          <h3>{userData.name || userData.login}</h3>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View GitHub Profile
-          </a>
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-center mt-4 text-blue-500">{error}</p>}
+
+      {searchResults.length > 0 && (
+        <div className="mt-6">
+          <h3 className="text-xl font-semibold mb-4">Search Results:</h3>
+          <div className="grid grid-cols-1 gap-4">
+            {searchResults.map((user) => (
+              <div key={user.id} className="flex items-center p-4 border rounded shadow">
+                <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full mr-4" />
+                <div>
+                  <h4 className="text-lg font-bold">{user.login}</h4>
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    View GitHub Profile
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
