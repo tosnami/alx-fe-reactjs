@@ -1,10 +1,8 @@
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; // Ensure this import exists
+import { Navigate, Outlet } from 'react-router-dom';
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuth();
-
-  return isAuthenticated ? children : <Navigate to="/login" />;
-}
+const ProtectedRoute = () => {
+  const isAuthenticated = localStorage.getItem('loggedIn') === 'true';
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+};
 
 export default ProtectedRoute;
