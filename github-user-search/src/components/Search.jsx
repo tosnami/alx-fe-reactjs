@@ -53,7 +53,7 @@ const Search = () => {
           onChange={(e) => setRepos(e.target.value)}
           className="w-full p-2 border rounded"
         />
-        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-yellow-300 py-2 rounded">
+        <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded">
           Search
         </button>
       </form>
@@ -75,7 +75,7 @@ const Search = () => {
   href={user.html_url}
   target="_blank"
   rel="noopener noreferrer"
-  className="text-[red]"
+  className="text-red-500 hover:text-red-600 visited:text-red-500"
 >
   View GitHub Profile
 </a>
